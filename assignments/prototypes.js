@@ -32,7 +32,41 @@
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
- 
+
+// Game Object
+function GameObject(gameObjectAttributes) {
+  this.createdAt = gameObjectAttributes.createdAt;
+  this.name = gameObjectAttributes.name;
+  this.dimensions = gameObjectAttributes.dimensions;
+}
+GameObject.prototype.destroy = function() {
+  return `${this.name} was removed from the game`;
+}
+
+// Character Stats
+function CharacterStats(charStatAttributes) {
+  GameObject.call(this, charStatAttributes);
+  this.healthPoints = charStatAttributes.healthPoints;
+}
+CharacterStats.prototype = Object.create(GameObject.prototype);
+
+CharacterStats.prototype.takeDamage = function() {
+  return `${this.name} took damage`;
+}
+
+// Humanoid
+function Humanoid(humanoidAttributes) {
+  CharacterStats.call(this, humanoidAttributes);
+  this.team = humanoidAttributes.team;
+  this.weapons = humanoidAttributes.weapons;
+  this.language = humanoidAttributes.language;
+}
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+
+Humanoid.prototype.greet = function() {
+  return `${this.name} offers a greeting in ${this.language}`;
+}
+
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
@@ -41,7 +75,7 @@
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -92,6 +126,7 @@
     language: 'Elvish',
   });
 
+
   console.log(mage.createdAt); // Today's date
   console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
   console.log(swordsman.healthPoints); // 15
@@ -102,7 +137,8 @@
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+
+
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
